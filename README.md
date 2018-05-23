@@ -24,14 +24,7 @@ Once downloaded go to the directory in your terminal
 ![image](https://user-images.githubusercontent.com/21117852/40422712-c56a3ab2-5ec2-11e8-8fc8-484f8c96fc8e.png)
 
 
-To Run the python program
-
-```
-python3 dragonBallZ.py
-```
-
-![image](https://user-images.githubusercontent.com/21117852/40422751-daacd236-5ec2-11e8-9c56-88100563639f.png)
-
+You should open up dragonBallZ.py and change a couple things
 
 You will need to change the download directory: example below -
 
@@ -54,4 +47,15 @@ pip3 install shutil
 ```
 
 ![image](https://user-images.githubusercontent.com/21117852/40423709-edc8ec9e-5ec5-11e8-829e-b9a8cd70dd57.png)
+
+
+
+To Run the python program
+
+```
+python3 dragonBallZ.py
+```
+
+![image](https://user-images.githubusercontent.com/21117852/40422751-daacd236-5ec2-11e8-9c56-88100563639f.png)
+
 
