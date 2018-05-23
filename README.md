@@ -50,7 +50,7 @@ pip3 install shutil
 
 
 
-To Run the python program
+To Run the python program open up the terminal:
 
 ```
 python3 dragonBallZ.py
