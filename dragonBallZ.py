@@ -1,36 +1,62 @@
-from fake_useragent import UserAgent
 import requests
-
-ua = UserAgent()
+import bs4
+import re
+import shutil
 
 count = 1
-headers = {
-    'User-Agent': ua.google
-}
+videoLinksList = []
 
 
+while count != 3:
 
-# sauce = urllib.request.urlopen('http://www.99kubo.tv/vod-play-id-78769-sid-0-pid-' + str(count) + '-flv.html').read()
-url = 'http://www.99kubo.tv/vod-play-id-78769-sid-0-pid-1-flv.html'
+    ##  The first url dragonBall Z Episode 1
+    url1 = "http://www.99tw.net/xplay/irmp408220.html?ep=" + str(count)
 
-# r = requests.get(url, headers=myHeaders)
-r = requests.get(url, headers=headers)
-print(r.text)
-# print(r.content)
-#sauce = urllib.request.urlopen('http://www.99kubo.tv/vod-play-id-78769-sid-0-pid-1-flv.html').read()
+    print(url1)
 
-# print(sauce)
-# exampleSoup = bs4.BeautifulSoup(sauce, 'html.parser')
+    ## headers so the fucking website doesnt think we are a bot
+    headers1 = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36'}
 
-#print(exampleSoup)
+    ##  use the requests get method to retrive the data from the web site
+    res = requests.get(url1, headers=headers1, stream=True)
 
-# for video in exampleSoup.find_all('a'):
-#     videoLink = video.get('src')
-#     print(videoLink)
-    # videoSearch = re.search(r'my-video_html5_api', videoSearch, flags=0)
-    #print(mp3Search)
-    # if mp3Search:
-    #     print(mp3Name)
-    #     downloadAndRename = urllib.request.urlretrieve("https://resources.allsetlearning.com/pronwiki/resources/pinyin-audio/" + mp3Name, "/Users/automac/Music/allPinyin/" + mp3Name)
+    ##  check if the status code is good
+    print("if you get 200 tots but if you get 403 or 404 its the fucken headers fault - anyway the result is " + str(
+        res.status_code))
+
+    ## grab the html text
+    soup = bs4.BeautifulSoup(res.text, "html5lib")
+
+    # print(soup)
+
+    ## grab just the javascript because the video is fucking hidden
+    js_text = soup.find('script', type="text/javascript").text
+
+    ## loop through the tags and find the main video link
+    for link in soup.find(js_text):
+        match = re.findall(r'http.{159}', str(link))
+        # print(match)
+        # add the match to a list
+        videoLinksList.append(match)
+
+    ## Using the negative -1 means to grabs something from the end of the array
+    videoLink1 = videoLinksList[-1][-1]
+    print("Grabs link from the end of the List ")
+    print(videoLink1)
+    print(videoLinksList)
+
+    ## Go to the new video link which as the pure video
+    pureVideoDownload = requests.get(videoLink1, headers=headers1, stream=True)
+    print(pureVideoDownload.status_code)
+
+    'Downloading video please wait '
+    with open('/Volumes/2ndDrive/tvShows/DragonBallZ/' + 'DragonBallZ- ' + str(count) + '.mp4', 'wb') as out_file:
+        shutil.copyfileobj(pureVideoDownload.raw, out_file)
+        # del will get out of the current file so the program can continue
+    del pureVideoDownload
+
+    count = count + 1
+    print(count)
 
 
